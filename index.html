@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SecurePass AI — Advanced Password Security</title>
+  <link rel="stylesheet" href="styles.css">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+  <!-- ========== SIDEBAR ========== -->
+  <aside class="sidebar" id="sidebar">
+    <div class="p-5 border-b border-[var(--border)]">
+      <div class="flex items-center gap-3">
+        <div class="w-9 h-9 rounded-lg bg-[var(--accent-g)] border border-[var(--accent-d)] flex items-center justify-center">
+          <i class="fa-solid fa-shield-halved text-[var(--accent)]"></i>
+        </div>
+        <div>
+          <div class="font-bold text-[15px] tracking-tight">SecurePass AI</div>
+          <div class="text-[11px] text-[var(--muted)] mono">v2.6.0</div>
+        </div>
+      </div>
+    </div>
+    <nav class="flex-1 py-3 overflow-y-auto" id="nav-list">
+      <div class="px-5 py-2 text-[10px] uppercase tracking-widest text-[var(--muted)] font-semibold">Main</div>
+      <div class="nav-item active" data-page="home"><i class="fa-solid fa-house"></i>Home</div>
+      <div class="nav-item" data-page="generator"><i class="fa-solid fa-wand-magic-sparkles"></i>Generator</div>
+      <div class="nav-item" data-page="checker"><i class="fa-solid fa-magnifying-glass"></i>Password Checker</div>
+      <div class="nav-item" data-page="assistant"><i class="fa-solid fa-robot"></i>AI Assistant</div>
+      <div class="px-5 py-2 mt-2 text-[10px] uppercase tracking-widest text-[var(--muted)] font-semibold">Tools</div>
+      <div class="nav-item" data-page="dashboard"><i class="fa-solid fa-gauge-high"></i>Dashboard</div>
+      <div class="nav-item" data-page="vault"><i class="fa-solid fa-vault"></i>Password Vault</div>
+      <div class="nav-item" data-page="analytics"><i class="fa-solid fa-chart-line"></i>Analytics</div>
+      <div class="nav-item" data-page="tips"><i class="fa-solid fa-lightbulb"></i>Security Tips</div>
+      <div class="px-5 py-2 mt-2 text-[10px] uppercase tracking-widest text-[var(--muted)] font-semibold">Account</div>
+      <div class="nav-item" data-page="auth"><i class="fa-solid fa-right-to-bracket"></i>Login / Register</div>
+      <div class="nav-item" data-page="admin"><i class="fa-solid fa-gear"></i>Admin Panel</div>
+    </nav>
+    <div class="p-4 border-t border-[var(--border)]">
+      <div id="sidebar-user" class="flex items-center gap-3">
+        <div class="w-8 h-8 rounded-full bg-[var(--border)] flex items-center justify-center">
+          <i class="fa-solid fa-user text-[var(--muted)] text-xs"></i>
+        </div>
+        <div>
+          <div class="text-sm font-medium" id="sidebar-username">Guest</div>
+          <div class="text-[11px] text-[var(--muted)]">Not logged in</div>
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+  <!-- ========== MAIN CONTENT ========== -->
+  <div class="main-content" id="main-content">
+
+    <!-- Mobile top bar -->
+    <div class="md:hidden flex items-center justify-between p-4 border-b border-[var(--border)] bg-[var(--bg2)] sticky top-0 z-30">
+      <button id="menu-btn" class="text-[var(--text)] text-xl bg-transparent border-none cursor-pointer">
+        <i class="fa-solid fa-bars"></i>
+      </button>
+      <div class="font-bold text-sm">SecurePass AI</div>
+      <div class="w-8"></div>
+    </div>
+
+    <!-- ===== PAGE: HOME ===== -->
+    <div class="page active" id="page-home">
+      <div class="grid-bg"></div>
+      <div class="hash-rain" id="hash-rain"></div>
+      <div class="relative min-h-screen flex flex-col">
+        <div class="flex-1 flex items-center justify-center px-6 py-20">
+          <div class="max-w-3xl text-center">
+            <div class="shield-container mx-auto mb-8">
+              <div class="shield-ring"></div>
+              <i class="fa-solid fa-shield-halved shield"></i>
+            </div>
+            <h1 class="text-5xl md:text-7xl font-bold tracking-tight mb-4">
+              <span class="text-[var(--text)]">Secure</span><span class="text-[var(--accent)]">Pass</span>
+              <span class="text-[var(--cyan)]">AI</span>
+            </h1>
+            <p class="text-lg md:text-xl text-[var(--muted)] max-w-xl mx-auto mb-10 leading-relaxed">
+              Military-grade password analysis with SHA hashing. Generate, audit, and vault your credentials.
+            </p>
+            <div class="flex flex-wrap gap-4 justify-center">
+              <button class="btn-primary text-base px-8 py-3" id="home-gen-btn">
+                <i class="fa-solid fa-wand-magic-sparkles mr-2"></i>Generate Strong Pass
+              </button>
+              <button class="btn-secondary text-base px-8 py-3" id="home-check-btn">
+                <i class="fa-solid fa-magnifying-glass mr-2"></i>Check Password
+              </button>
+            </div>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-16">
+              <div class="glow-card p-4 text-center">
+                <div class="text-2xl font-bold text-[var(--accent)]">SHA-512</div>
+                <div class="text-xs text-[var(--muted)] mt-1">Max Security</div>
+              </div>
+              <div class="glow-card p-4 text-center">
+                <div class="text-2xl font-bold text-[var(--cyan)]">AES-256</div>
+                <div class="text-xs text-[var(--muted)] mt-1">Vault Encryption</div>
+              </div>
+              <div class="glow-card p-4 text-center">
+                <div class="text-2xl font-bold text-[var(--warn)]">PBKDF2</div>
+                <div class="text-xs text-[var(--muted)] mt-1">Key Derivation</div>
+              </div>
+              <div class="glow-card p-4 text-center">
+                <div class="text-2xl font-bold text-[var(--danger)]">0 KB</div>
+                <div class="text-xs text-[var(--muted)] mt-1">Data Sent</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="text-center py-6 text-xs text-[var(--muted)]">
+          All processing happens locally in your browser. No data ever leaves your device.
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== PAGE: GENERATOR ===== -->
+    <div class="page" id="page-generator">
+      <div class="p-6 md:p-10 max-w-3xl mx-auto">
+        <h2 class="text-3xl font-bold mb-2">Password Generator</h2>
+        <p class="text-[var(--muted)] mb-8">Create cryptographically strong passwords with guaranteed character diversity.</p>
+
+        <!-- Output -->
+        <div class="glow-card p-6 mb-6">
+          <div class="pw-output mb-4" id="gen-output">
+            <span id="gen-placeholder">Press the button below to generate a password</span>
+            <span id="gen-password-text" style="display:none"></span>
+          </div>
+          <div class="flex items-center gap-3 flex-wrap">
+            <button class="btn-icon" id="gen-copy-btn" disabled title="Copy to clipboard">
+              <i class="fa-solid fa-copy"></i>
+            </button>
+            <button class="btn-icon" id="gen-refresh-btn" title="Regenerate">
+              <i class="fa-solid fa-rotate"></i>
+            </button>
+            <div class="flex-1"></div>
+            <div class="strength-pill" id="gen-strength-badge">No password</div>
+          </div>
+          <div class="strength-bar mt-4 h-2 rounded-lg">
+            <div class="strength-fill" id="gen-strength-bar" style="width:0%"></div>
+          </div>
+          <div class="flex justify-between mt-2 text-xs text-[var(--muted)]">
+            <span id="gen-strength-text">Generate a password to see analysis</span>
+            <span class="mono" id="gen-score-text">—</span>
+          </div>
+        </div>
+
+        <!-- Length -->
+        <div class="glow-card p-6 mb-6">
+          <div class="flex items-center justify-between mb-4">
+            <label class="font-medium">Password Length</label>
+            <div class="flex items-center gap-3">
+              <button class="btn-icon len-adj" id="gen-len-minus" style="width:32px;height:32px;font-size:11px">
+                <i class="fa-solid fa-minus"></i>
+              </button>
+              <span class="mono text-[var(--accent)] font-bold text-2xl w-12 text-center" id="gen-len-val">16</span>
+              <button class="btn-icon len-adj" id="gen-len-plus" style="width:32px;height:32px;font-size:11px">
+                <i class="fa-solid fa-plus"></i>
+              </button>
+            </div>
+          </div>
+          <input type="range" min="4" max="128" value="16" id="gen-length">
+          <div class="flex justify-between text-[10px] text-[var(--muted)] mt-1">
+            <span>4</span><span>32</span><span>64</span><span>96</span><span>128</span>
+          </div>
+          <div class="flex gap-2 mt-3 flex-wrap" id="gen-quick-lens">
+            <button class="quick-len" data-len="8">8</button>
+            <button class="quick-len" data-len="12">12</button>
+            <button class="quick-len active" data-len="16">16</button>
+            <button class="quick-len" data-len="24">24</button>
+            <button class="quick-len" data-len="32">32</button>
+            <button class="quick-len" data-len="64">64</button>
+          </div>
+        </div>
+
+        <!-- Character Types -->
+        <div class="glow-card p-6 mb-6">
+          <h3 class="font-semibold mb-4 text-sm uppercase tracking-wider text-[var(--muted)]">Character Types</h3>
+          <div class="space-y-4" id="gen-toggles">
+            <div class="flex items-center justify-between">
+              <div class="flex items-center gap-3">
+                <div class="type-badge t-upper mono">A</div>
+                <div><div class="font-medium text-sm">Uppercase Letters</div><div class="text-xs text-[var(--muted)] mono">A B C D ... X Y Z</div></div>
+              </div>
+              <button type="button" class="toggle-btn" role="switch" aria-checked="true" aria-label="Include uppercase letters" data-opt="upper"></button>
+            </div>
+            <div class="flex items-center justify-between">
+              <div class="flex items-center gap-3">
+                <div class="type-badge t-lower mono">a</div>
+                <div><div class="font-medium text-sm">Lowercase Letters</div><div class="text-xs text-[var(--muted)] mono">a b c d ... x y z</div></div>
+              </div>
+              <button type="button" class="toggle-btn" role="switch" aria-checked="true" aria-label="Include lowercase letters" data-opt="lower"></button>
+            </div>
+            <div class="flex items-center justify-between">
+              <div class="flex items-center gap-3">
+                <div class="type-badge t-num mono">7</div>
+                <div><div class="font-medium text-sm">Numbers</div><div class="text-xs text-[var(--muted)] mono">0 1 2 3 ... 7 8 9</div></div>
+              </div>
+              <button type="button" class="toggle-btn" role="switch" aria-checked="true" aria-label="Include numbers" data-opt="numbers"></button>
+            </div>
+            <div class="flex items-center justify-between">
+              <div class="flex items-center gap-3">
+                <div class="type-badge t-sym mono">#</div>
+                <div><div class="font-medium text-sm">Symbols</div><div class="text-xs text-[var(--muted)] mono">! @ # $ % ^ & * ( ) _ + - =</div></div>
+              </div>
+              <button type="button" class="toggle-btn" role="switch" aria-checked="true" aria-label="Include symbols" data-opt="symbols"></button>
+            </div>
+            <div class="flex items-center justify-between border-t border-[var(--border)] pt-4">
+              <div><div class="font-medium text-sm">Exclude Ambiguous Chars</div><div class="text-xs text-[var(--muted)]">Removes 0, O, l, 1, I, |</div></div>
+              <button type="button" class="toggle-btn" role="switch" aria-checked="false" aria-label="Exclude ambiguous characters" data-opt="noAmbig"></button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Generate Button -->
+        <button class="btn-primary w-full py-4 text-lg" id="gen-btn">
+          <i class="fa-solid fa-wand-magic-sparkles mr-2"></i>Generate Password
+        </button>
+
+        <!-- Legend -->
+        <div class="flex items-center justify-center gap-6 mt-4 text-xs text-[var(--muted)]">
+          <span><span class="inline-block w-2 h-2 rounded-full mr-1" style="background:var(--accent)"></span>Uppercase</span>
+          <span><span class="inline-block w-2 h-2 rounded-full mr-1" style="background:var(--cyan)"></span>Lowercase</span>
+          <span><span class="inline-block w-2 h-2 rounded-full mr-1" style="background:var(--warn)"></span>Numbers</span>
+          <span><span class="inline-block w-2 h-2 rounded-full mr-1" style="background:var(--danger)"></span>Symbols</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== PAGE: PASSWORD CHECKER ===== -->
+    <div class="page" id="page-checker">
+      <div class="p-6 md:p-10 max-w-4xl mx-auto">
+        <h2 class="text-3xl font-bold mb-2">Password Strength Checker</h2>
+        <p class="text-[var(--muted)] mb-8">Analyze with SHA-1, SHA-256, SHA-384, SHA-512, entropy, and crack-time estimation.</p>
+
+        <div class="glow-card p-6 mb-6">
+          <div class="relative">
+            <input type="password" class="input-field text-lg mono pr-24" id="check-input" placeholder="Enter password to analyze..." autocomplete="off">
+            <div class="absolute right-3 top-1/2 -translate-y-1/2 flex gap-1">
+              <button class="btn-icon" style="width:36px;height:36px;border:none;background:transparent" id="check-eye-btn">
+                <i class="fa-solid fa-eye" id="check-eye"></i>
+              </button>
+              <button class="btn-icon" style="width:36px;height:36px;border:none;background:transparent" id="check-clear-btn">
+                <i class="fa-solid fa-xmark"></i>
+              </button>
+            </div>
+          </div>
+          <div class="mt-4">
+            <div class="strength-bar h-2.5 rounded-lg">
+              <div class="strength-fill" id="check-bar" style="width:0%"></div>
+            </div>
+            <div class="flex justify-between mt-2">
+              <span class="text-sm font-semibold" id="check-label">Enter a password</span>
+              <span class="text-sm mono" id="check-score">0/100</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+          <div class="glow-card p-4 text-center"><div class="text-xs text-[var(--muted)] mb-1">Entropy</div><div class="text-xl font-bold mono" id="m-entropy">0 bits</div></div>
+          <div class="glow-card p-4 text-center"><div class="text-xs text-[var(--muted)] mb-1">Crack Time</div><div class="text-xl font-bold mono" id="m-crack">—</div></div>
+          <div class="glow-card p-4 text-center"><div class="text-xs text-[var(--muted)] mb-1">Diversity</div><div class="text-xl font-bold mono" id="m-diversity">0/4</div></div>
+          <div class="glow-card p-4 text-center"><div class="text-xs text-[var(--muted)] mb-1">Pattern</div><div class="text-xl font-bold" id="m-pattern">None</div></div>
+        </div>
+
+        <div class="glow-card p-6 mb-6" id="check-findings" style="display:none">
+          <h3 class="font-semibold mb-3 text-sm uppercase tracking-wider text-[var(--muted)]">Findings</h3>
+          <ul class="space-y-2" id="findings-list"></ul>
+        </div>
+
+        <div class="space-y-4">
+          <h3 class="font-semibold text-sm uppercase tracking-wider text-[var(--muted)]">Cryptographic Hashes</h3>
+          <div>
+            <div class="flex items-center gap-2 mb-1">
+              <span class="text-xs font-semibold text-[var(--warn)] mono">SHA-1</span>
+              <span class="text-[10px] text-[var(--danger)]">INSECURE</span>
+              <button class="ml-auto text-xs text-[var(--muted)] hover:text-[var(--accent)] bg-transparent border-none cursor-pointer" data-copy-hash="hash-sha1"><i class="fa-solid fa-copy"></i> Copy</button>
+            </div>
+            <div class="hash-display mono" id="hash-sha1">—</div>
+          </div>
+          <div>
+            <div class="flex items-center gap-2 mb-1">
+              <span class="text-xs font-semibold text-[var(--accent)] mono">SHA-256</span>
+              <span class="text-[10px] text-[var(--accent)]">RECOMMENDED</span>
+              <button class="ml-auto text-xs text-[var(--muted)] hover:text-[var(--accent)] bg-transparent border-none cursor-pointer" data-copy-hash="hash-sha256"><i class="fa-solid fa-copy"></i> Copy</button>
+            </div>
+            <div class="hash-display mono" id="hash-sha256">—</div>
+          </div>
+          <div>
+            <div class="flex items-center gap-2 mb-1">
+              <span class="text-xs font-semibold text-[var(--cyan)] mono">SHA-384</span>
+              <span class="text-[10px] text-[var(--cyan)]">STRONG</span>
+              <button class="ml-auto text-xs text-[var(--muted)] hover:text-[var(--accent)] bg-transparent border-none cursor-pointer" data-copy-hash="hash-sha384"><i class="fa-solid fa-copy"></i> Copy</button>
+            </div>
+            <div class="hash-display mono" id="hash-sha384">—</div>
+          </div>
+          <div>
+            <div class="flex items-center gap-2 mb-1">
+              <span class="text-xs font-semibold text-[var(--text)] mono">SHA-512</span>
+              <span class="text-[10px] text-[var(--accent)]">MAXIMUM</span>
+              <button class="ml-auto text-xs text-[var(--muted)] hover:text-[var(--accent)] bg-transparent border-none cursor-pointer" data-copy-hash="hash-sha512"><i class="fa-solid fa-copy"></i> Copy</button>
+            </div>
+            <div class="hash-display mono" id="hash-sha512">—</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== PAGE: AI ASSISTANT ===== -->
+    <div class="page" id="page-assistant">
+      <div class="flex flex-col h-screen">
+        <div class="p-6 pb-4 border-b border-[var(--border)]">
+          <h2 class="text-2xl font-bold">AI Security Assistant</h2>
+          <p class="text-[var(--muted)] text-sm mt-1">Personalized password security advice.</p>
+        </div>
+        <div class="flex-1 overflow-y-auto p-6 space-y-4" id="chat-messages">
+          <div class="flex gap-3">
+            <div class="w-8 h-8 rounded-full bg-[var(--accent-g)] border border-[var(--accent-d)] flex items-center justify-center flex-shrink-0">
+              <i class="fa-solid fa-robot text-[var(--accent)] text-xs"></i>
+            </div>
+            <div class="chat-bubble chat-ai">Welcome to SecurePass AI. Ask me to analyze a password, explain SHA algorithms, or get security tips.</div>
+          </div>
+        </div>
+        <div class="p-4 border-t border-[var(--border)]">
+          <div class="flex gap-3 max-w-3xl mx-auto">
+            <input class="input-field flex-1" id="chat-input" placeholder="Ask about password security...">
+            <button class="btn-primary px-6" id="chat-send-btn"><i class="fa-solid fa-paper-plane"></i></button>
+          </div>
+          <div class="flex gap-2 mt-3 max-w-3xl mx-auto flex-wrap" id="chat-quick-btns">
+            <button class="text-xs px-3 py-1.5 rounded-full border border-[var(--border)] text-[var(--muted)] hover:border-[var(--accent-d)] hover:text-[var(--text)] transition-colors bg-transparent cursor-pointer" data-quick="Analyze the password: P@ssw0rd123">Analyze: P@ssw0rd123</button>
+            <button class="text-xs px-3 py-1.5 rounded-full border border-[var(--border)] text-[var(--muted)] hover:border-[var(--accent-d)] hover:text-[var(--text)] transition-colors bg-transparent cursor-pointer" data-quick="How long should my password be?">Length advice</button>
+            <button class="text-xs px-3 py-1.5 rounded-full border border-[var(--border)] text-[var(--muted)] hover:border-[var(--accent-d)] hover:text-[var(--text)] transition-colors bg-transparent cursor-pointer" data-quick="What is a passphrase?">What is a passphrase?</button>
+            <button class="text-xs px-3 py-1.5 rounded-full border border-[var(--border)] text-[var(--muted)] hover:border-[var(--accent-d)] hover:text-[var(--text)] transition-colors bg-transparent cursor-pointer" data-quick="How does SHA-256 work?">How SHA-256 works</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== PAGE: DASHBOARD ===== -->
+    <div class="page" id="page-dashboard">
+      <div class="p-6 md:p-10">
+        <h2 class="text-3xl font-bold mb-2">Security Dashboard</h2>
+        <p class="text-[var(--muted)] mb-8">Overview of your password security posture.</p>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+          <div class="glow-card p-5"><div class="flex items-center justify-between mb-3"><div class="text-[var(--muted)] text-sm">Total Passwords</div><i class="fa-solid fa-key text-[var(--accent)]"></i></div><div class="text-3xl font-bold" id="dash-total">0</div></div>
+          <div class="glow-card p-5"><div class="flex items-center justify-between mb-3"><div class="text-[var(--muted)] text-sm">Strong</div><i class="fa-solid fa-shield-halved text-[var(--success)]"></i></div><div class="text-3xl font-bold text-[var(--success)]" id="dash-strong">0</div></div>
+          <div class="glow-card p-5"><div class="flex items-center justify-between mb-3"><div class="text-[var(--muted)] text-sm">Weak</div><i class="fa-solid fa-triangle-exclamation text-[var(--warn)]"></i></div><div class="text-3xl font-bold text-[var(--warn)]" id="dash-weak">0</div></div>
+          <div class="glow-card p-5"><div class="flex items-center justify-between mb-3"><div class="text-[var(--muted)] text-sm">Security Score</div><i class="fa-solid fa-chart-simple text-[var(--cyan)]"></i></div><div class="text-3xl font-bold text-[var(--cyan)]" id="dash-score">—</div></div>
+        </div>
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div class="glow-card p-6"><h3 class="font-semibold mb-4">Recent Activity</h3><div class="space-y-3" id="dash-activity"><div class="text-sm text-[var(--muted)]">No activity yet.</div></div></div>
+          <div class="glow-card p-6"><h3 class="font-semibold mb-4">Strength Distribution</h3><canvas id="dash-chart" height="200"></canvas></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== PAGE: VAULT ===== -->
+    <div class="page" id="page-vault">
+      <div class="p-6 md:p-10">
+        <div class="flex items-center justify-between mb-8 flex-wrap gap-4">
+          <div><h2 class="text-3xl font-bold">Password Vault</h2><p class="text-[var(--muted)] mt-1">AES-256-GCM encrypted local storage.</p></div>
+          <button class="btn-primary" id="vault-add-btn" style="display:none"><i class="fa-solid fa-plus mr-2"></i>Add Entry</button>
+        </div>
+        <div id="vault-locked" class="glow-card p-12 text-center">
+          <i class="fa-solid fa-lock text-4xl text-[var(--muted)] mb-4"></i>
+          <h3 class="text-xl font-semibold mb-2">Vault Locked</h3>
+          <p class="text-[var(--muted)] mb-6 text-sm">Enter your master password to decrypt your vault.</p>
+          <div class="max-w-sm mx-auto space-y-3">
+            <input type="password" class="input-field" id="vault-master" placeholder="Master password">
+            <button class="btn-primary w-full" id="vault-unlock-btn">Unlock Vault</button>
+            <p class="text-xs text-[var(--muted)]">First time? Enter a new master password to create your vault.</p>
+          </div>
+        </div>
+        <div id="vault-unlocked" style="display:none">
+          <div class="flex items-center gap-3 mb-6">
+            <input class="input-field flex-1" id="vault-search" placeholder="Search vault entries...">
+            <button class="btn-danger" id="vault-lock-btn"><i class="fa-solid fa-lock mr-1"></i>Lock</button>
+          </div>
+          <div class="space-y-3" id="vault-list"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== PAGE: ANALYTICS ===== -->
+    <div class="page" id="page-analytics">
+      <div class="p-6 md:p-10">
+        <h2 class="text-3xl font-bold mb-2">Security Analytics</h2>
+        <p class="text-[var(--muted)] mb-8">Detailed breakdown of your password security metrics.</p>
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+          <div class="glow-card p-6"><h3 class="font-semibold mb-4">Strength Over Time</h3><canvas id="chart-strength-time" height="220"></canvas></div>
+          <div class="glow-card p-6"><h3 class="font-semibold mb-4">Length Distribution</h3><canvas id="chart-length-dist" height="220"></canvas></div>
+        </div>
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div class="glow-card p-6"><h3 class="font-semibold mb-4">Character Type Usage</h3><canvas id="chart-chartype" height="220"></canvas></div>
+          <div class="glow-card p-6"><h3 class="font-semibold mb-4">Entropy Distribution</h3><canvas id="chart-entropy" height="220"></canvas></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== PAGE: SECURITY TIPS ===== -->
+    <div class="page" id="page-tips">
+      <div class="p-6 md:p-10 max-w-4xl mx-auto">
+        <h2 class="text-3xl font-bold mb-2">Security Tips</h2>
+        <p class="text-[var(--muted)] mb-8">Essential knowledge for protecting your digital identity.</p>
+        <div class="space-y-4" id="tips-container"></div>
+      </div>
+    </div>
+
+    <!-- ===== PAGE: AUTH ===== -->
+    <div class="page" id="page-auth">
+      <div class="min-h-screen flex items-center justify-center p-6">
+        <div class="w-full max-w-md">
+          <div class="text-center mb-8">
+            <div class="w-16 h-16 rounded-2xl bg-[var(--accent-g)] border border-[var(--accent-d)] flex items-center justify-center mx-auto mb-4">
+              <i class="fa-solid fa-shield-halved text-2xl text-[var(--accent)]"></i>
+            </div>
+            <h2 class="text-2xl font-bold" id="auth-title">Login</h2>
+            <p class="text-[var(--muted)] text-sm mt-1" id="auth-subtitle">Access your SecurePass AI account</p>
+          </div>
+          <div class="glow-card p-6">
+            <div id="auth-login">
+              <div class="space-y-4">
+                <div><label class="text-sm text-[var(--muted)] mb-1 block">Username</label><input class="input-field" id="login-user" placeholder="Enter username"></div>
+                <div><label class="text-sm text-[var(--muted)] mb-1 block">Password</label><input type="password" class="input-field" id="login-pass" placeholder="Enter password"></div>
+                <button class="btn-primary w-full py-3" id="login-btn">Login</button>
+                <div class="text-center text-sm text-[var(--muted)]">Don't have an account? <a class="text-[var(--accent)] cursor-pointer hover:underline" id="show-register-link">Register</a></div>
+              </div>
+            </div>
+            <div id="auth-register" style="display:none">
+              <div class="space-y-4">
+                <div><label class="text-sm text-[var(--muted)] mb-1 block">Username</label><input class="input-field" id="reg-user" placeholder="Choose a username"></div>
+                <div><label class="text-sm text-[var(--muted)] mb-1 block">Email</label><input type="email" class="input-field" id="reg-email" placeholder="Enter email"></div>
+                <div><label class="text-sm text-[var(--muted)] mb-1 block">Password</label><input type="password" class="input-field" id="reg-pass" placeholder="Create a password"></div>
+                <div><label class="text-sm text-[var(--muted)] mb-1 block">Confirm Password</label><input type="password" class="input-field" id="reg-pass2" placeholder="Confirm password"></div>
+                <button class="btn-primary w-full py-3" id="register-btn">Create Account</button>
+                <div class="text-center text-sm text-[var(--muted)]">Already have an account? <a class="text-[var(--accent)] cursor-pointer hover:underline" id="show-login-link">Login</a></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== PAGE: ADMIN PANEL ===== -->
+    <div class="page" id="page-admin">
+      <div class="p-6 md:p-10">
+        <div class="flex items-center justify-between mb-8 flex-wrap gap-4">
+          <div><h2 class="text-3xl font-bold">Admin Panel</h2><p class="text-[var(--muted)] mt-1">System management and monitoring.</p></div>
+          <div class="flex items-center gap-2 text-sm"><span class="w-2 h-2 rounded-full bg-[var(--success)] animate-pulse"></span><span class="text-[var(--muted)]">System Online</span></div>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
+          <div class="glow-card p-5"><div class="text-[var(--muted)] text-sm mb-1">Total Users</div><div class="text-3xl font-bold">1,247</div><div class="text-xs text-[var(--success)] mt-1"><i class="fa-solid fa-arrow-up"></i> +12.3%</div></div>
+          <div class="glow-card p-5"><div class="text-[var(--muted)] text-sm mb-1">Passwords Stored</div><div class="text-3xl font-bold">8,432</div><div class="text-xs text-[var(--success)] mt-1"><i class="fa-solid fa-arrow-up"></i> +8.7%</div></div>
+          <div class="glow-card p-5"><div class="text-[var(--muted)] text-sm mb-1">Avg Strength</div><div class="text-3xl font-bold text-[var(--accent)]">76.4</div><div class="text-xs text-[var(--warn)] mt-1"><i class="fa-solid fa-arrow-down"></i> -2.1</div></div>
+          <div class="glow-card p-5"><div class="text-[var(--muted)] text-sm mb-1">Alerts</div><div class="text-3xl font-bold text-[var(--danger)]">3</div><div class="text-xs text-[var(--danger)] mt-1"><i class="fa-solid fa-circle-exclamation"></i> Attention</div></div>
+        </div>
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+          <div class="lg:col-span-2 glow-card p-6"><h3 class="font-semibold mb-4">Registered Users</h3><div class="overflow-x-auto"><table class="data-table"><thead><tr><th>User</th><th>Email</th><th>Role</th><th>Status</th></tr></thead><tbody id="admin-users"></tbody></table></div></div>
+          <div class="glow-card p-6"><h3 class="font-semibold mb-4">System Logs</h3><div class="space-y-3 max-h-[400px] overflow-y-auto" id="admin-logs"></div></div>
+        </div>
+        <div class="glow-card p-6"><h3 class="font-semibold mb-4">Security Alerts</h3><div class="space-y-3" id="admin-alerts"></div></div>
+      </div>
+    </div>
+
+  </div><!-- /main-content -->
+
+  <!-- ========== VAULT MODAL ========== -->
+  <div class="modal-backdrop" id="vault-modal">
+    <div class="modal-box">
+      <div class="flex items-center justify-between mb-6">
+        <h3 class="text-xl font-bold" id="vault-modal-title">Add Entry</h3>
+        <button class="text-[var(--muted)] hover:text-[var(--text)] bg-transparent border-none cursor-pointer text-lg" id="vault-modal-close">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+      <div class="space-y-4">
+        <div><label class="text-sm text-[var(--muted)] mb-1 block">Service</label><input class="input-field" id="vault-service" placeholder="e.g. GitHub, Gmail"></div>
+        <div><label class="text-sm text-[var(--muted)] mb-1 block">Username / Email</label><input class="input-field" id="vault-username" placeholder="Your username or email"></div>
+        <div><label class="text-sm text-[var(--muted)] mb-1 block">Password</label>
+          <div class="relative">
+            <input type="text" class="input-field pr-20" id="vault-password" placeholder="Enter password">
+            <button class="absolute right-2 top-1/2 -translate-y-1/2 text-xs text-[var(--accent)] hover:underline px-2 bg-transparent border-none cursor-pointer" id="vault-gen-fill">Generate</button>
+          </div>
+        </div>
+        <div><label class="text-sm text-[var(--muted)] mb-1 block">Notes (optional)</label><input class="input-field" id="vault-notes" placeholder="Any notes"></div>
+        <input type="hidden" id="vault-edit-id" value="">
+        <button class="btn-primary w-full py-3" id="vault-save-btn">Save Entry</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast-container"></div>
+
+  <script src="app.js"></script>
+</body>
+</html>
